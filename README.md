@@ -85,7 +85,7 @@ Recibe un array de Pokémon y crea una tarjeta para cada uno utilizando .map().
 
 Cada elemento utiliza una key estable: 
 
-```text
+```js
 key={pokemon.id}
 ```
 
@@ -130,13 +130,13 @@ src/services/api.js
 
 La función principal es:
 
-```text
+```js
 obtenerPokemons()
 ```
 
 Primero se obtienen los primeros Pokémon y después se solicitan sus detalles. También se comprueba:
 
-```text
+```js
 respuesta.ok
 ```
 Porque `fetch` no considera automáticamente como error una respuesta HTTP como 404 o 500.
@@ -149,7 +149,7 @@ Se han añadido varias mejoras respecto a la versión anterior.
 
 Para solicitar los detalles de los Pokémon se utiliza:
 
-```text
+```js
 Promise.allSettled()
 ```
 
@@ -173,7 +173,7 @@ Se ha intentado evitar crear estados innecesarios.
 
 Por ejemplo, no existe un estado llamado:
 
-```text
+```js
 pokemonsFiltrados
 ```
 
@@ -186,7 +186,7 @@ La lista se calcula directamente a partir de:
 
 Ejemplo:
 
-```text
+```js
 const pokemonsFiltrados = pokemons.filter(...);
 ```
 
@@ -196,7 +196,7 @@ Esto evita tener información duplicada en diferentes estados.
 
 Antes de utilizar `.sort()` se crea una copia del array:
 
-```text
+```js
 const pokemonsOrdenados = {...pokemonsFiltrados};
 ```
 
@@ -206,23 +206,25 @@ Así evitamos modificar directamente el array original.
 
 ## Estructura principal
 
+```text
 src/
-|
-| - components/
-|   | - Buscador.jsx
-|   | - Filtros.jsx
-|   | - PokemonCard.jsx
-|   | - PokemonList.jsx
-|
-| - hooks/
-|   | - usePokemons.js
-|
-| - services/
-|   | - api.js
-|
-| - App.jsx
-| - main.jsx
-| - style.css
+│
+├── components/
+│   ├── Buscador.jsx
+│   ├── Filtros.jsx
+│   ├── PokemonCard.jsx
+│   └── PokemonList.jsx
+│
+├── hooks/
+│   └── usePokemons.js
+│
+├── services/
+│   └── api.js
+│
+├── App.jsx
+├── main.jsx
+└── style.css
+```
 
 ## Uso de Inteligencia Artificial
 
@@ -250,7 +252,8 @@ Cómo puedo evitar guardar los Pokémon filtrados en otro useState?
 Cómo puedo crear un custom hook sencillo para cargar los Pokémon?
 ```
 
-```Cómo puedo evitar que falle toda la Pokédex si una petición individual da error?
+```text
+Cómo puedo evitar que falle toda la Pokédex si una petición individual da error?
 ```
 
 ## Autopsia del proyecto
@@ -259,7 +262,7 @@ Cómo puedo crear un custom hook sencillo para cargar los Pokémon?
 
 Una posibilidad era crear:
 
-```text
+```js
 const [pokemonsFiltrados, setPokemonsFiltrados] = useState([]);
 ```
 
@@ -267,7 +270,7 @@ Y actualizarlo cada vez que cambiara el buscador o los filtros. Finalmente se de
 
 Los Pokémon filtrados pueden calcularse directamente a partir de los Pokémon originales y de los filtros seleccionados:
 
-```text
+```js
 const pokemonsFiltrados = pokemons.filter(...);
 ```
 
@@ -302,7 +305,7 @@ En la versión anterior se utilizaba Promise.all().
 
 El problema es que si una sola petición falla, toda la operación puede fallar. En esta versión se ha utilizado:
 
-```text
+```js
 Promise.allSettled()
 ```
 
