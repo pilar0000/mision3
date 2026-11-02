@@ -1,15 +1,25 @@
 import { useEffect, useState } from "react";
+
 import { obtenerPokemons } from "./services/api.js";
-import { PokemonList } from "./components/PokemonList";
-import { Buscador } from "./components/Buscador";
+import { PokemonList } from "./components/PokemonList.jsx";
+import { Buscador } from "./components/Buscador.jsx";
 
 function App() {
 
+  // Estado donde guardamos los Pokémon
   const [pokemons, setPokemons] = useState([]);
-  const [cargando, setCargando] = useState(true);
-  const [error, setError] = useState("");
+
+  // Estado del buscador
   const [busqueda, setBusqueda] = useState("");
 
+  // Estado de carga
+  const [cargando, setCargando] = useState(true);
+
+  // Estado de error
+  const [error, setError] = useState("");
+
+
+  // Cargar los Pokémon cuando se abre la aplicación
   useEffect(() => {
 
     async function cargarPokemons() {
@@ -22,7 +32,7 @@ function App() {
 
       } catch (error) {
 
-        setError("No se pudieron cargar los Pokémon");
+        setError("No se pudieron cargar los Pokémon.");
 
       } finally {
 
@@ -36,6 +46,15 @@ function App() {
 
   }, []);
 
+
+  // Pokémon filtrados según lo que escriba el usuario
+  const pokemonsFiltrados = pokemons.filter((pokemon) =>
+    pokemon.nombre
+      .toLowerCase()
+      .includes(busqueda.toLowerCase())
+  );
+
+
   return (
     <main>
 
@@ -46,13 +65,35 @@ function App() {
         setBusqueda={setBusqueda}
       />
 
-      {cargando && <p>Cargando Pokémon...</p>}
 
-      {error && <p>{error}</p>}
-
-      {!cargando && !error && (
-        <PokemonList pokemons={pokemonsFiltrados} />
+      {cargando && (
+        <p className="estado">
+          Cargando Pokémon...
+        </p>
       )}
+
+
+      {error && (
+        <p className="error">
+          {error}
+        </p>
+      )}
+
+
+      {!cargando &&
+        !error &&
+        pokemonsFiltrados.length === 0 && (
+          <p className="estado">
+            No se encontraron Pokémon 😢
+          </p>
+        )}
+
+
+      {!cargando &&
+        !error &&
+        pokemonsFiltrados.length > 0 && (
+          <PokemonList pokemons={pokemonsFiltrados} />
+        )}
 
     </main>
   );

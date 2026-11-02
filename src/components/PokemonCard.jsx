@@ -8,7 +8,9 @@ export function PokemonCard({ pokemon }) {
         alt={pokemon.nombre}
       />
 
-      <h2>{pokemon.nombre}</h2>
+      <h2>
+        {pokemon.nombre}
+      </h2>
 
       <p>
         Tipo: {pokemon.tipos.join(", ")}
