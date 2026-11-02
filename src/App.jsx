@@ -4,15 +4,32 @@ import { usePokemons } from "./hooks/usePokemons.js";
 
 import { Buscador } from "./components/Buscador.jsx";
 
+import { Filtros } from "./components/Filtros.jsx";
+
 import { PokemonList } from "./components/PokemonList.jsx";
 
 
 function App() {
 
+  // Texto escrito en el buscador
   const [busqueda, setBusqueda] =
     useState("");
 
 
+  // Tipo elegido por el usuario
+  const [
+    tipoSeleccionado,
+    setTipoSeleccionado
+  ] = useState("todos");
+
+
+  // Forma de ordenar la lista
+  const [orden, setOrden] =
+    useState("original");
+
+
+  // El custom hook se ocupa
+  // de cargar los Pokémon
   const {
     pokemons,
     cargando,
@@ -21,26 +38,82 @@ function App() {
   } = usePokemons();
 
 
-  // Quitamos espacios al principio y al final
-  // y pasamos el texto a minúsculas
+  // Quitamos espacios y pasamos
+  // el texto a minúsculas
   const textoBusqueda =
     busqueda
       .trim()
       .toLowerCase();
 
 
-  // No usamos otro useState.
-  // Esta lista se deriva de los Pokémon
-  // y del texto del buscador.
+  // Sacamos todos los tipos disponibles.
+  // Set evita que haya tipos repetidos.
+  const tiposDisponibles = [
+    ...new Set(
+      pokemons.flatMap(
+        (pokemon) =>
+          pokemon.tipos
+      )
+    )
+  ].sort();
+
+
+  // Filtramos por nombre y tipo.
+  // No necesitamos otro useState.
   const pokemonsFiltrados =
-    pokemons.filter(
-      (pokemon) =>
+    pokemons.filter((pokemon) => {
+
+      const coincideNombre =
         pokemon.nombre
           .toLowerCase()
           .includes(
             textoBusqueda
-          )
+          );
+
+
+      const coincideTipo =
+        tipoSeleccionado === "todos" ||
+        pokemon.tipos.includes(
+          tipoSeleccionado
+        );
+
+
+      return (
+        coincideNombre &&
+        coincideTipo
+      );
+
+    });
+
+
+  // Creamos una copia antes de ordenar
+  // para no modificar el array original.
+  const pokemonsOrdenados =
+    [...pokemonsFiltrados];
+
+
+  if (orden === "az") {
+
+    pokemonsOrdenados.sort(
+      (a, b) =>
+        a.nombre.localeCompare(
+          b.nombre
+        )
     );
+
+  }
+
+
+  if (orden === "za") {
+
+    pokemonsOrdenados.sort(
+      (a, b) =>
+        b.nombre.localeCompare(
+          a.nombre
+        )
+    );
+
+  }
 
 
   return (
@@ -60,14 +133,34 @@ function App() {
       />
 
 
+      {!cargando && !error && (
+
+        <Filtros
+          tipos={tiposDisponibles}
+          tipoSeleccionado={
+            tipoSeleccionado
+          }
+          setTipoSeleccionado={
+            setTipoSeleccionado
+          }
+          orden={orden}
+          setOrden={setOrden}
+        />
+
+      )}
+
+
       {cargando && (
+
         <p className="estado">
           ⏳ Cargando Pokémon...
         </p>
+
       )}
 
 
       {error && (
+
         <section className="mensaje-error">
 
           <p className="error">
@@ -82,15 +175,20 @@ function App() {
           </button>
 
         </section>
+
       )}
 
 
       {!cargando &&
-        !error &&
-        pokemonsFiltrados.length === 0 && (
+        !error && (
 
-          <p className="estado">
-            No se encontraron Pokémon 😢
+          <p className="contador-resultados">
+
+            Mostrando{" "}
+            {pokemonsOrdenados.length}
+            {" "}
+            Pokémon
+
           </p>
 
         )}
@@ -98,11 +196,24 @@ function App() {
 
       {!cargando &&
         !error &&
-        pokemonsFiltrados.length > 0 && (
+        pokemonsOrdenados.length === 0 && (
+
+          <p className="estado">
+
+            No se encontraron Pokémon 😢
+
+          </p>
+
+        )}
+
+
+      {!cargando &&
+        !error &&
+        pokemonsOrdenados.length > 0 && (
 
           <PokemonList
             pokemons={
-              pokemonsFiltrados
+              pokemonsOrdenados
             }
           />
 
