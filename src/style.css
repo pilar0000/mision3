@@ -43,7 +43,9 @@ h1 {
 }
 
 
-/* BUSCADOR */
+/* =========================
+   BUSCADOR
+========================= */
 
 #buscador {
   width: 300px;
@@ -75,7 +77,16 @@ h1 {
 }
 
 
-/* MENSAJES */
+#buscador:disabled {
+  opacity: 0.6;
+
+  cursor: not-allowed;
+}
+
+
+/* =========================
+   MENSAJES
+========================= */
 
 .estado {
   margin-top: 20px;
@@ -87,7 +98,7 @@ h1 {
 
 
 .error {
-  margin-top: 20px;
+  margin: 0 0 15px;
 
   font-weight: bold;
 
@@ -95,7 +106,58 @@ h1 {
 }
 
 
-/* CONTENEDOR */
+.mensaje-error {
+  width: 400px;
+
+  max-width: 90%;
+
+  margin: 25px auto;
+
+  padding: 20px;
+
+  background-color: #fffbea;
+
+  border: 3px solid #fb7185;
+
+  border-radius: 20px;
+}
+
+
+/* =========================
+   BOTÓN REINTENTAR
+========================= */
+
+.boton-reintentar {
+  padding: 10px 18px;
+
+  border: 2px solid #f97316;
+
+  border-radius: 20px;
+
+  background-color: #f97316;
+
+  color: white;
+
+  font-size: 16px;
+
+  font-weight: bold;
+
+  cursor: pointer;
+
+  transition: 0.2s;
+}
+
+
+.boton-reintentar:hover {
+  transform: scale(1.05);
+
+  background-color: #ea580c;
+}
+
+
+/* =========================
+   CONTENEDOR DE POKÉMON
+========================= */
 
 #pokemon-container {
   display: grid;
@@ -112,7 +174,9 @@ h1 {
 }
 
 
-/* TARJETAS */
+/* =========================
+   TARJETAS
+========================= */
 
 .pokemon-card {
   background-color: #fffbea;
@@ -142,10 +206,13 @@ h1 {
 }
 
 
-/* IMAGEN */
+/* =========================
+   IMAGEN
+========================= */
 
 .pokemon-card img {
   width: 130px;
+
   height: 130px;
 
   background-color: #ccfbf1;
@@ -156,7 +223,30 @@ h1 {
 }
 
 
-/* NOMBRE */
+.sin-imagen {
+  display: flex;
+
+  align-items: center;
+
+  justify-content: center;
+
+  width: 130px;
+
+  height: 130px;
+
+  margin: 0 auto;
+
+  background-color: #ccfbf1;
+
+  border-radius: 50%;
+
+  font-size: 50px;
+}
+
+
+/* =========================
+   TEXTO DE LAS TARJETAS
+========================= */
 
 .pokemon-card h2 {
   text-transform: capitalize;
@@ -167,10 +257,26 @@ h1 {
 }
 
 
-/* TIPO */
-
 .pokemon-card p {
   color: #166534;
 
   font-weight: bold;
+}
+
+
+/* =========================
+   MÓVIL
+========================= */
+
+@media (max-width: 600px) {
+
+  h1 {
+    font-size: 36px;
+  }
+
+
+  main {
+    padding: 20px 15px;
+  }
+
 }
